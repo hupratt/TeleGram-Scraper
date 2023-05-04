@@ -2,3 +2,4 @@
 *.session
 *.data
 env/
+invite_sent_list.pkl
