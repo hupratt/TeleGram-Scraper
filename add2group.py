@@ -2,7 +2,7 @@
 from telethon.sync import TelegramClient
 from telethon.tl.functions.messages import GetDialogsRequest
 from telethon.tl.types import InputPeerEmpty, InputPeerChannel, InputPeerUser
-from telethon.errors.rpcerrorlist import PeerFloodError, UserPrivacyRestrictedError
+from telethon.errors.rpcerrorlist import PeerFloodError, UserPrivacyRestrictedError, UserNotMutualContactError
 from telethon.tl.functions.channels import InviteToChannelRequest
 import configparser
 import os, sys
@@ -116,6 +116,11 @@ for user in users:
 		print(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
 		sys.exit(re+"[!] Invalid Mode Selected. Please Try Again.")
 	except UserPrivacyRestrictedError:
+		print(re+"[!] The user's privacy settings do not allow you to do this. Skipping.")
+		invite_sent_list.append(user_to_add)
+		with open("invite_sent_list.pkl", "wb") as file:
+			pickle.dump(invite_sent_list, file)
+	except UserNotMutualContactError:
 		print(re+"[!] The user's privacy settings do not allow you to do this. Skipping.")
 		invite_sent_list.append(user_to_add)
 		with open("invite_sent_list.pkl", "wb") as file:
