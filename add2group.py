@@ -97,6 +97,7 @@ for user in users:
 	invite_sent_list = []
 	with open("invite_sent_list.pkl", "rb") as file:
 		invite_sent_list = pickle.load(file)
+		print(gr+"Loaded {} bans".format(len(invite_sent_list)))
 	try:
 		print(gr+"Trying to add id {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
 		if mode == 1 and user not in invite_sent_list:
@@ -122,11 +123,13 @@ for user in users:
 		invite_sent_list.append(user_to_add)
 		with open("invite_sent_list.pkl", "wb") as file:
 			pickle.dump(invite_sent_list, file)
+		print(gr+"Saved {} into pickle".format(user['id']))
 	except UserNotMutualContactError:
 		print(re+"You don't have permission to add {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
 		invite_sent_list.append(user_to_add)
 		with open("invite_sent_list.pkl", "wb") as file:
 			pickle.dump(invite_sent_list, file)
+		print(gr+"Saved {} into pickle".format(user['id']))
 	except:
 		traceback.print_exc()
 		print(re+"[!] Unexpected Error")
