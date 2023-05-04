@@ -1,8 +1,10 @@
-import pickle
-invite_sent_list = []
-with open("invite_sent_list.pkl", "rb") as file:
-	invite_sent_list = pickle.load(file)
 
-print(len(invite_sent_list))
-for person in invite_sent_list:
-	print(person.user_id)
+import csv
+invite_sent_list_saved=[]
+with open('invite_sent_list.csv', newline='\n') as csvfile:
+	spamreader = csv.reader(csvfile, delimiter=',')
+	for row in spamreader:
+		invite_sent_list_saved.append(row[0])
+
+invite_sent_list_saved
+'5374020267' not in invite_sent_list_saved
