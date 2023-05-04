@@ -119,6 +119,7 @@ for user in users:
 				continue
 			user_to_add = InputPeerUser(user['id'], user['access_hash'])
 			result = client(InviteToChannelRequest(target_group_entity,[user_to_add]))
+			time.sleep(random.randrange(5, 10))
 		if result is not None and str(user['id']) not in invite_sent_list:
 			invite_sent_list.append(user_to_add)
 			print(gr+"Success added and saving to pickle {} into pickle".format(user['id']))
