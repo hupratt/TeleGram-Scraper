@@ -91,13 +91,13 @@ n = 0
 # ret = client(InviteToChannelRequest(target_group_entity,[user_to_add]))
 
 
+invite_sent_list = []
+with open("invite_sent_list.pkl", "rb") as file:
+	invite_sent_list = pickle.load(file)
+print(gr+"Loaded {} bans".format(len(invite_sent_list)))
+
 for user in users:
 	n += 1
-	time.sleep(random.randrange(5, 10))
-	invite_sent_list = []
-	with open("invite_sent_list.pkl", "rb") as file:
-		invite_sent_list = pickle.load(file)
-		print(gr+"Loaded {} bans".format(len(invite_sent_list)))
 	try:
 		print(gr+"Trying to add id {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
 		if mode == 1 and user not in invite_sent_list:
