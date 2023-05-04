@@ -10,6 +10,7 @@ import csv
 import traceback
 import time
 import random
+import pickle
 
 re="\033[1;31m"
 gr="\033[1;32m"
@@ -99,16 +100,24 @@ n = 0
 for user in users:
 	n += 1
 	time.sleep(random.randrange(5, 10))
+	invite_sent_list = []
+	with open("invite_sent_list.pkl", "rb") as file:
+		invite_sent_list = pickle.load(file)
 	try:
 		print ("Adding {}".format(user['id']))
-		if mode == 1:
+		if mode == 1 and user not in invite_sent_list:
 			if user['username'] == "":
 				continue
 			user_to_add = client.get_input_entity(user['username'])
-		elif mode == 2:
+		elif mode == 2 and user not in invite_sent_list:
+			if user['id'] == "":
+				continue
 			user_to_add = InputPeerUser(user['id'], user['access_hash'])
 		else:
 			sys.exit(re+"[!] Invalid Mode Selected. Please Try Again.")
+		invite_sent_list.append(user_to_add)
+		with open("invite_sent_list.pkl", "wb") as file:
+			pickle.dump(invite_sent_list, file)
 		client(InviteToChannelRequest(target_group_entity,[user_to_add]))
 		print(gr+"[+] Waiting for 5-10 Seconds...")
 		time.sleep(random.randrange(5, 10))
