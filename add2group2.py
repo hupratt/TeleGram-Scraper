@@ -102,8 +102,8 @@ with open('invite_sent_list.csv', newline='\n') as csvfile:
 
 # with open("invite_sent_list.pkl", "rb") as file:
 # 	invite_sent_list_saved = pickle.load(file)
-# print(gr+"Loaded {} bans".format(len(invite_sent_list)))
 invite_sent_list.extend(invite_sent_list_saved)
+print(gr+"Loaded {} bans".format(len(invite_sent_list)))
 
 for user in users:
 	n += 1
