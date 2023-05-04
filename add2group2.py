@@ -120,15 +120,14 @@ for user in users:
 				continue
 			user_to_add = InputPeerUser(user['id'], user['access_hash'])
 			result = client(InviteToChannelRequest(target_group_entity,[user_to_add]))
-		print(gr+"[+] Success, waiting for 5-10 Seconds to add the next one ...")
 		if result is not None and str(user['id']) not in invite_sent_list:
 			invite_sent_list.append(user_to_add)
 			print(gr+"Success added and saving to pickle {} into pickle".format(user['id']))
 			with open('invite_sent_list.csv','a') as fd:
 				fd.write(str(user['id'])+"\n")
+			time.sleep(random.randrange(5, 10))
 		else:
 			print(gr+"Not appending, already in file")
-		time.sleep(random.randrange(5, 10))
 	except PeerFloodError as e:
 		print(e)
 		sys.exit(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
