@@ -127,7 +127,9 @@ for user in users:
 		sys.exit(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
 	except UserIdInvalidError as e:
 		print(e)
-		sys.exit(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
+		with open("invite_sent_list.pkl", "wb") as file:
+			pickle.dump(invite_sent_list, file)
+		print(gr+"UserIdInvalidError {} into pickle".format(user['id']))
 	except UserPrivacyRestrictedError:
 		print(re+"You don't have permission to add {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
 		invite_sent_list.append(user_to_add)
