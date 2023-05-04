@@ -98,7 +98,7 @@ for user in users:
 	with open("invite_sent_list.pkl", "rb") as file:
 		invite_sent_list = pickle.load(file)
 	try:
-		print ("Adding {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
+		print(gr+"Trying to add id {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
 		if mode == 1 and user not in invite_sent_list:
 			if user['username'] == "":
 				continue
@@ -113,18 +113,17 @@ for user in users:
 		print(gr+"[+] Success, waiting for 5-10 Seconds to add the next one ...")
 		if result is not None:
 			print(result)
-			print(dir(result))
+		# 	print(dir(result))
 		time.sleep(random.randrange(5, 10))
 	except PeerFloodError:
-		print(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
-		sys.exit(re+"[!] Invalid Mode Selected. Please Try Again.")
+		sys.exit(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
 	except UserPrivacyRestrictedError:
-		print(re+"[!] The user's privacy settings do not allow you to do this. Skipping.")
+		print(re+"You don't have permission to add {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
 		invite_sent_list.append(user_to_add)
 		with open("invite_sent_list.pkl", "wb") as file:
 			pickle.dump(invite_sent_list, file)
 	except UserNotMutualContactError:
-		print(re+"[!] The user's privacy settings do not allow you to do this. Skipping.")
+		print(re+"You don't have permission to add {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
 		invite_sent_list.append(user_to_add)
 		with open("invite_sent_list.pkl", "wb") as file:
 			pickle.dump(invite_sent_list, file)
