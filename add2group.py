@@ -48,7 +48,7 @@ if not client.is_user_authorized():
  
 os.system('clear')
 banner()
-input_file = sys.argv[1]
+input_file = 'members_coc.csv'
 users = []
 with open(input_file, encoding='UTF-8') as f:
 	rows = csv.reader(f,delimiter=",",lineterminator="\n")
@@ -77,24 +77,15 @@ chats.extend(result.chats)
  
 for chat in chats:
 	try:
-		if chat.megagroup== True:
+		if chat.megagroup== True and chat.title=='Coc market place':
 			groups.append(chat)
 	except:
 		continue
  
-i=0
-for group in groups:
-	print(gr+'['+cy+str(i)+gr+']'+cy+' - '+group.title)
-	i+=1
-
-print(gr+'[+] Choose a group to add members')
-g_index = input(gr+"[+] Enter a Number : "+re)
-target_group=groups[int(g_index)]
  
-target_group_entity = InputPeerChannel(target_group.id,target_group.access_hash)
+target_group_entity = InputPeerChannel(groups[0].id,groups[0].access_hash)
  
-print(gr+"[1] add member by user ID\n[2] add member by username ")
-mode = int(input(gr+"Input : "+re)) 
+mode = 2
 n = 0
  
 for user in users:
