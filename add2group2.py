@@ -110,11 +110,11 @@ for user in users:
 	time.sleep(random.randrange(5, 10))
 	try:
 		print(gr+"Trying to add id {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
-		if mode == 1 and user not in invite_sent_list:
+		if mode == 1 and str(user['id']) not in invite_sent_list:
 			if user['username'] == "":
 				continue
 			user_to_add = client.get_input_entity(user['username'])
-		elif mode == 2 and user not in invite_sent_list:
+		elif mode == 2 and str(user['id']) not in invite_sent_list:
 			if user['id'] == "":
 				continue
 			user_to_add = InputPeerUser(user['id'], user['access_hash'])
@@ -126,7 +126,7 @@ for user in users:
 			invite_sent_list.append(user_to_add)
 			print(gr+"Success added and saving to pickle {} into pickle".format(user['id']))
 			with open('invite_sent_list.csv','a') as fd:
-				fd.write(user['id']+"\n")
+				fd.write(str(user['id'])+"\n")
 		time.sleep(random.randrange(5, 10))
 	except PeerFloodError as e:
 		print(e)
@@ -137,19 +137,19 @@ for user in users:
 	except UserIdInvalidError as e:
 		print(e)
 		with open('invite_sent_list.csv','a') as fd:
-			fd.write(user['id']+"\n")
+			fd.write(str(user['id'])+"\n")
 		print(gr+"UserIdInvalidError {} into pickle".format(user['id']))
 	except UserPrivacyRestrictedError:
 		print(re+"You don't have permission to add {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
 		invite_sent_list.append(user_to_add)
 		with open('invite_sent_list.csv','a') as fd:
-			fd.write(user['id']+"\n")
+			fd.write(str(user['id'])+"\n")
 		print(gr+"Saved {} into pickle".format(user['id']))
 	except UserNotMutualContactError:
 		print(re+"You don't have permission to add {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
 		invite_sent_list.append(user_to_add)
 		with open('invite_sent_list.csv','a') as fd:
-			fd.write(user['id']+"\n")
+			fd.write(str(user['id'])+"\n")
 		print(gr+"Saved {} into pickle".format(user['id']))
 	except:
 		traceback.print_exc()
