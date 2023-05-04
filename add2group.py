@@ -113,8 +113,10 @@ for user in users:
 		result = client(InviteToChannelRequest(target_group_entity,[user_to_add]))
 		print(gr+"[+] Success, waiting for 5-10 Seconds to add the next one ...")
 		if result is not None:
-			print(result)
-		# 	print(dir(result))
+			invite_sent_list.append(user_to_add)
+			with open("invite_sent_list.pkl", "wb") as file:
+				pickle.dump(invite_sent_list, file)
+			print(gr+"Success added and saving to pickle {} into pickle".format(user['id']))
 		time.sleep(random.randrange(5, 10))
 	except PeerFloodError:
 		sys.exit(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
