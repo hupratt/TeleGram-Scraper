@@ -107,9 +107,9 @@ for user in users:
 		else:
 			sys.exit(re+"[!] Invalid Mode Selected. Please Try Again.")
 		invite_sent_list.append(user_to_add)
+		client(InviteToChannelRequest(target_group_entity,[user_to_add]))
 		with open("invite_sent_list.pkl", "wb") as file:
 			pickle.dump(invite_sent_list, file)
-		client(InviteToChannelRequest(target_group_entity,[user_to_add]))
 		print(gr+"[+] Waiting for 5-10 Seconds...")
 		time.sleep(random.randrange(5, 10))
 	except PeerFloodError:
