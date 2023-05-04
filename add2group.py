@@ -2,7 +2,7 @@
 from telethon.sync import TelegramClient
 from telethon.tl.functions.messages import GetDialogsRequest
 from telethon.tl.types import InputPeerEmpty, InputPeerChannel, InputPeerUser
-from telethon.errors.rpcerrorlist import PeerFloodError, UserPrivacyRestrictedError, UserNotMutualContactError
+from telethon.errors.rpcerrorlist import PeerFloodError, UserPrivacyRestrictedError, UserNotMutualContactError, FloodWaitError
 from telethon.tl.functions.channels import InviteToChannelRequest
 import configparser
 import os, sys
@@ -120,6 +120,8 @@ for user in users:
 			print(gr+"Success added and saving to pickle {} into pickle".format(user['id']))
 		time.sleep(random.randrange(5, 10))
 	except PeerFloodError:
+		sys.exit(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
+	except FloodWaitError:
 		sys.exit(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
 	except UserPrivacyRestrictedError:
 		print(re+"You don't have permission to add {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
