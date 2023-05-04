@@ -26,7 +26,7 @@ def banner():
 		""")
 
 cpass = configparser.RawConfigParser()
-cpass.read('config.data')
+cpass.read('config2.data')
 
 try:
 	api_id = cpass['cred']['id']
