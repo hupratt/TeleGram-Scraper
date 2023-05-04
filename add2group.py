@@ -46,8 +46,6 @@ if not client.is_user_authorized():
 	banner()
 	client.sign_in(phone, input(gr+'[+] Enter the code: '+re))
  
-os.system('clear')
-banner()
 input_file = 'members_coc.csv'
 users = []
 with open(input_file, encoding='UTF-8') as f:
@@ -81,13 +79,18 @@ for chat in chats:
 			groups.append(chat)
 	except:
 		continue
- 
- 
 target_group_entity = InputPeerChannel(groups[0].id,groups[0].access_hash)
  
 mode = 2
 n = 0
- 
+
+
+# user_to_add = InputPeerUser(users[0]['id'], user[0]['access_hash'])
+# user_to_add = InputPeerUser(1968817380, -5006610720952129287)
+# user_to_add = client.get_input_entity(users[0]['username'])
+# ret = client(InviteToChannelRequest(target_group_entity,[user_to_add]))
+
+
 for user in users:
 	n += 1
 	time.sleep(random.randrange(5, 10))
@@ -95,7 +98,7 @@ for user in users:
 	with open("invite_sent_list.pkl", "rb") as file:
 		invite_sent_list = pickle.load(file)
 	try:
-		print ("Adding {}".format(user['id']))
+		print ("Adding {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
 		if mode == 1 and user not in invite_sent_list:
 			if user['username'] == "":
 				continue
@@ -106,16 +109,17 @@ for user in users:
 			user_to_add = InputPeerUser(user['id'], user['access_hash'])
 		else:
 			sys.exit(re+"[!] Invalid Mode Selected. Please Try Again.")
-		invite_sent_list.append(user_to_add)
 		client(InviteToChannelRequest(target_group_entity,[user_to_add]))
-		with open("invite_sent_list.pkl", "wb") as file:
-			pickle.dump(invite_sent_list, file)
-		print(gr+"[+] Waiting for 5-10 Seconds...")
+		print(gr+"[+] Success, waiting for 5-10 Seconds to add the next one ...")
 		time.sleep(random.randrange(5, 10))
 	except PeerFloodError:
 		print(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
+		sys.exit(re+"[!] Invalid Mode Selected. Please Try Again.")
 	except UserPrivacyRestrictedError:
 		print(re+"[!] The user's privacy settings do not allow you to do this. Skipping.")
+		invite_sent_list.append(user_to_add)
+		with open("invite_sent_list.pkl", "wb") as file:
+			pickle.dump(invite_sent_list, file)
 	except:
 		traceback.print_exc()
 		print(re+"[!] Unexpected Error")
