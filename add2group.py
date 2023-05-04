@@ -119,9 +119,11 @@ for user in users:
 				pickle.dump(invite_sent_list, file)
 			print(gr+"Success added and saving to pickle {} into pickle".format(user['id']))
 		time.sleep(random.randrange(5, 10))
-	except PeerFloodError:
+	except PeerFloodError as e:
+		print(e)
 		sys.exit(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
-	except FloodWaitError:
+	except FloodWaitError as e:
+		print(e)
 		sys.exit(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
 	except UserPrivacyRestrictedError:
 		print(re+"You don't have permission to add {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
