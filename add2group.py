@@ -109,8 +109,11 @@ for user in users:
 			user_to_add = InputPeerUser(user['id'], user['access_hash'])
 		else:
 			sys.exit(re+"[!] Invalid Mode Selected. Please Try Again.")
-		client(InviteToChannelRequest(target_group_entity,[user_to_add]))
+		result = client(InviteToChannelRequest(target_group_entity,[user_to_add]))
 		print(gr+"[+] Success, waiting for 5-10 Seconds to add the next one ...")
+		if result is not None:
+			print(result)
+			print(dir(result))
 		time.sleep(random.randrange(5, 10))
 	except PeerFloodError:
 		print(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
