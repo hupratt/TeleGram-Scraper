@@ -2,7 +2,7 @@
 from telethon.sync import TelegramClient
 from telethon.tl.functions.messages import GetDialogsRequest
 from telethon.tl.types import InputPeerEmpty, InputPeerChannel, InputPeerUser
-from telethon.errors.rpcerrorlist import PeerFloodError, UserPrivacyRestrictedError, UserNotMutualContactError, FloodWaitError
+from telethon.errors.rpcerrorlist import PeerFloodError, UserPrivacyRestrictedError, UserNotMutualContactError, FloodWaitError, UserIdInvalidError
 from telethon.tl.functions.channels import InviteToChannelRequest
 import configparser
 import os, sys
@@ -123,6 +123,9 @@ for user in users:
 		print(e)
 		sys.exit(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
 	except FloodWaitError as e:
+		print(e)
+		sys.exit(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
+	except UserIdInvalidError as e:
 		print(e)
 		sys.exit(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
 	except UserPrivacyRestrictedError:
