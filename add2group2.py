@@ -107,6 +107,7 @@ print(gr+"Loaded {} bans".format(len(invite_sent_list)))
 
 for user in users:
 	n += 1
+	result = None
 	time.sleep(random.randrange(5, 10))
 	try:
 		print(gr+"Trying to add id {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
@@ -118,11 +119,11 @@ for user in users:
 			if user['id'] == "":
 				continue
 			user_to_add = InputPeerUser(user['id'], user['access_hash'])
+			result = client(InviteToChannelRequest(target_group_entity,[user_to_add]))
 		else:
 			sys.exit(re+"[!] Invalid Mode Selected. Please Try Again.")
-		result = client(InviteToChannelRequest(target_group_entity,[user_to_add]))
 		print(gr+"[+] Success, waiting for 5-10 Seconds to add the next one ...")
-		if result is not None:
+		if result is not None and str(user['id']) not in invite_sent_list:
 			invite_sent_list.append(user_to_add)
 			print(gr+"Success added and saving to pickle {} into pickle".format(user['id']))
 			with open('invite_sent_list.csv','a') as fd:
