@@ -11,6 +11,8 @@ import traceback
 import time
 import random
 import pickle
+import csv
+
 
 re="\033[1;31m"
 gr="\033[1;32m"
@@ -92,9 +94,15 @@ n = 0
 
 
 invite_sent_list = []
-with open("invite_sent_list.pkl", "rb") as file:
-	invite_sent_list_saved = pickle.load(file)
-print(gr+"Loaded {} bans".format(len(invite_sent_list)))
+invite_sent_list_saved = []
+with open('invite_sent_list.csv', newline='\n') as csvfile:
+	spamreader = csv.reader(csvfile, delimiter=',')
+	for row in spamreader:
+		invite_sent_list_saved.append(row[0])
+
+# with open("invite_sent_list.pkl", "rb") as file:
+# 	invite_sent_list_saved = pickle.load(file)
+# print(gr+"Loaded {} bans".format(len(invite_sent_list)))
 invite_sent_list.extend(invite_sent_list_saved)
 
 for user in users:
@@ -116,9 +124,9 @@ for user in users:
 		print(gr+"[+] Success, waiting for 5-10 Seconds to add the next one ...")
 		if result is not None:
 			invite_sent_list.append(user_to_add)
-			with open("invite_sent_list.pkl", "wb") as file:
-				pickle.dump(invite_sent_list, file)
 			print(gr+"Success added and saving to pickle {} into pickle".format(user['id']))
+			with open('invite_sent_list.csv','a') as fd:
+				fd.write(user['id']+"\n")
 		time.sleep(random.randrange(5, 10))
 	except PeerFloodError as e:
 		print(e)
@@ -128,20 +136,20 @@ for user in users:
 		sys.exit(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
 	except UserIdInvalidError as e:
 		print(e)
-		with open("invite_sent_list.pkl", "wb") as file:
-			pickle.dump(invite_sent_list, file)
+		with open('invite_sent_list.csv','a') as fd:
+			fd.write(user['id']+"\n")
 		print(gr+"UserIdInvalidError {} into pickle".format(user['id']))
 	except UserPrivacyRestrictedError:
 		print(re+"You don't have permission to add {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
 		invite_sent_list.append(user_to_add)
-		with open("invite_sent_list.pkl", "wb") as file:
-			pickle.dump(invite_sent_list, file)
+		with open('invite_sent_list.csv','a') as fd:
+			fd.write(user['id']+"\n")
 		print(gr+"Saved {} into pickle".format(user['id']))
 	except UserNotMutualContactError:
 		print(re+"You don't have permission to add {} and hash {} to group {}".format(user['id'], user['access_hash'], target_group_entity))
 		invite_sent_list.append(user_to_add)
-		with open("invite_sent_list.pkl", "wb") as file:
-			pickle.dump(invite_sent_list, file)
+		with open('invite_sent_list.csv','a') as fd:
+			fd.write(user['id']+"\n")
 		print(gr+"Saved {} into pickle".format(user['id']))
 	except:
 		traceback.print_exc()
